@@ -1,0 +1,66 @@
+{
+  "name": "dither-model",
+  "version": "1.0.0",
+  "description": "Any STL as 1-bit dithered pixel art, turning slowly on your page. A custom element, a React component and a CLI that makes big CAD files small.",
+  "type": "module",
+  "main": "./src/index.js",
+  "types": "./src/index.d.ts",
+  "bin": {
+    "dither-model": "./bin/dither-model.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "default": "./src/index.js"
+    },
+    "./react": {
+      "types": "./src/react.d.ts",
+      "default": "./src/react.js"
+    },
+    "./dist/dither-model.js": "./dist/dither-model.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "src",
+    "dist",
+    "bin"
+  ],
+  "sideEffects": [
+    "./src/browser.js",
+    "./dist/dither-model.js"
+  ],
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "build": "esbuild src/browser.js --bundle --format=iife --minify --target=es2020 --legal-comments=none --outfile=dist/dither-model.js"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0"
+  },
+  "keywords": [
+    "stl",
+    "3d",
+    "cad",
+    "model-viewer",
+    "dither",
+    "pixel-art",
+    "1-bit",
+    "indieweb",
+    "web-component",
+    "react"
+  ],
+  "author": "Erick Donado (https://github.com/KanuSaru)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KanuSaru/dither-model.git"
+  },
+  "homepage": "https://github.com/KanuSaru/dither-model#readme"
+}

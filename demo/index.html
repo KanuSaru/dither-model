@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>dither-model demo</title>
+    <style>
+      body { margin: 0; padding: 32px 16px; background: #0d0d0c; color: #e7e2d6; font: 16px/1.5 system-ui, sans-serif; }
+      main { max-width: 34rem; margin: 0 auto; display: grid; gap: 1.5rem; }
+      h1 { font-size: 1.25rem; margin: 0; }
+      p { margin: 0; }
+      .box { border: 1px solid #2b2a26; background: #131312; padding: 1rem; display: grid; gap: .75rem; justify-items: center; }
+      .small { font-size: .8125rem; color: #918c81; justify-self: start; }
+      .light { background: #f4f1ea; color: #1b1a17; border-color: #d8d3c7; }
+      .drop { border-style: dashed; min-height: 10rem; align-content: center; text-align: center; color: #918c81; }
+      .drop.over { border-color: #7390ff; }
+      a { color: inherit; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>dither-model</h1>
+      <p>Any STL as 1-bit pixel art. Drag it to turn it.</p>
+
+      <div class="box">
+        <dither-model
+          src="../examples/steam-deck/steam-deck.json"
+          width="400" height="200" pixel-size="2"
+          dark="-88 -49.4 -1 88 50.6 1"
+          label="Steam Deck, turning slowly"></dither-model>
+        <p class="small">
+          3D model: <a href="https://gitlab.steamos.cloud/SteamHardware/SteamDeck">Steam Deck CAD</a> by Valve,
+          <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>, simplified.
+        </p>
+      </div>
+
+      <div class="box light">
+        <dither-model src="../examples/steam-deck/steam-deck.json" width="240" height="120" pixel-size="3" spin="0" yaw="0" pitch="0"
+          dark="-88 -49.4 -1 88 50.6 1" label="Steam Deck, from the front"></dither-model>
+        <p class="small">Still, bigger pixels, on a light background. The ink is the text color.</p>
+      </div>
+
+      <label class="box drop" id="drop">
+        <span>Drop an STL here (or click to pick one). It stays in your browser.</span>
+        <input type="file" accept=".stl" hidden />
+      </label>
+    </main>
+    <script src="../dist/dither-model.js"></script>
+    <script>
+      const drop = document.getElementById("drop");
+      let shown = null;
+      async function show(file) {
+        const { parseSTL, simplify, encodeModel, decodeModel, createModel } = window.DitherModel;
+        const model = decodeModel(encodeModel(simplify(parseSTL(await file.arrayBuffer()), { triangles: 9000 })));
+        shown?.destroy();
+        drop.querySelector("span").textContent = file.name;
+        shown = createModel(drop, { model, width: 400, height: 240, label: file.name });
+      }
+      drop.querySelector("input").addEventListener("change", (e) => e.target.files[0] && show(e.target.files[0]));
+      drop.addEventListener("dragover", (e) => { e.preventDefault(); drop.classList.add("over"); });
+      drop.addEventListener("dragleave", () => drop.classList.remove("over"));
+      drop.addEventListener("drop", (e) => { e.preventDefault(); drop.classList.remove("over"); const f = e.dataTransfer.files[0]; if (f) show(f); });
+    </script>
+  </body>
+</html>
