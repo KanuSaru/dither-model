@@ -6,7 +6,7 @@
   "main": "./src/index.js",
   "types": "./src/index.d.ts",
   "bin": {
-    "dither-model": "./bin/dither-model.js"
+    "dither-model": "bin/dither-model.js"
   },
   "exports": {
     ".": {
