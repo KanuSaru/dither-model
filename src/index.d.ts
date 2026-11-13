@@ -32,6 +32,8 @@ export interface ModelOptions {
   ambient?: number;
   /** Dark lines where the surface folds. Default true */
   edges?: boolean;
+  /** A solid line around the silhouette, so it stays clean at any angle. Default true */
+  outline?: boolean;
   /** Boxes, in the file's units, drawn dark (a screen, a window) */
   dark?: Box[];
   /** Light direction: x right, y up, z toward the viewer. Default [-0.4, 0.55, 0.75] */

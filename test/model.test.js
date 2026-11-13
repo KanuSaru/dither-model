@@ -79,7 +79,7 @@ test("packing keeps positions within a hair and keeps credit", () => {
 test("renders ink inside the frame, and dark boxes stay empty", () => {
   const d = decodeModel(encodeModel(simplify(parseSTL(binarySTL(tris)))));
   const p = prepare(d);
-  const o = { w: 40, h: 40, zoom: 0.9, light: lightFrom([0, 0, 1]), ambient: 0.08, edges: -2 };
+  const o = { w: 40, h: 40, zoom: 0.9, light: lightFrom([0, 0, 1]), ambient: 0.08, edges: -2, outline: false };
   const bits = renderFrame(p, { yaw: 0, pitch: 0 }, o);
   const ink = bits.reduce((a, b) => a + b, 0);
   assert.ok(ink > 300, `only ${ink} pixels`);
@@ -96,4 +96,15 @@ test("orient turns the model before drawing", () => {
   // a vertex at (x, y, z) goes to (x, -z, y) after 90° around x
   const i = [...d.positions].findIndex((_, k) => k % 3 === 0 && d.positions[k] === -1 && d.positions[k + 1] === -1 && d.positions[k + 2] === 1);
   assert.ok(Math.abs(p.pos[i + 1] - -1) < 1e-6 && Math.abs(p.pos[i + 2] - -1) < 1e-6);
+});
+
+test("the outline draws the silhouette even where the surface is dark", () => {
+  const d = decodeModel(encodeModel(simplify(parseSTL(binarySTL(tris)))));
+  const p = prepare(d);
+  const o = { w: 40, h: 40, zoom: 0.9, light: lightFrom([0, 0, 1]), ambient: 0.08, edges: -2, dark: darkBoxes([[-2, -2, 0.9, 2, 2, 1.1]], p) };
+  const bits = renderFrame(p, { yaw: 0, pitch: 0 }, o);
+  const ink = bits.reduce((a, b) => a + b, 0);
+  // a square ring one pixel thick, nothing inside it
+  assert.ok(ink >= 80 && ink < 180, `${ink} pixels`);
+  assert.equal(bits[20 * 40 + 20], 0);
 });

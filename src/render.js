@@ -108,11 +108,23 @@ export function renderFrame(p, view, o, buf = {}) {
   }
 
   const ambient = o.ambient ?? 0.08, edges = o.edges ?? 0.75, depthEdge = (o.depthEdge ?? 0.06), dark = o.dark || [];
+  const outline = o.outline ?? true;
+  // how much a face is turned toward the viewer: 1 facing, 0 seen edge-on
+  const facing = (f) => {
+    const fz1 = -normals[f] * sy + normals[f + 2] * cy;
+    return Math.abs(normals[f + 1] * sp + fz1 * cp);
+  };
   for (let j = 0; j < H; j++) {
     for (let i = 0; i < W; i++) {
       const k = j * W + i, f = face[k];
       if (f < 0) continue;
       let v = ambient + (1 - ambient) * tone[k];
+      // the outline: wherever the model meets the empty background, a solid line of ink,
+      // so the silhouette stays clean at any angle
+      if (outline && (i === 0 || j === 0 || i === W - 1 || j === H - 1 || face[k - 1] < 0 || face[k + 1] < 0 || face[k - W] < 0 || face[k + W] < 0)) {
+        out[k] = 1;
+        continue;
+      }
       // dark areas (a screen, a window…): boxes in the model's own space
       for (const b of dark) {
         if (ox[k] >= b[0] && ox[k] <= b[3] && oy[k] >= b[1] && oy[k] <= b[4] && oz[k] >= b[2] && oz[k] <= b[5]) { v = 0; break; }
@@ -129,8 +141,9 @@ export function renderFrame(p, view, o, buf = {}) {
           // one part in front of another: the nearer one gets the line
           if (z[k] - z[n] > depthEdge) { v = 0; break; }
           if (z[n] - z[k] > depthEdge) continue;
-          // a fold: only looking right and down, so the line is one pixel wide
-          if (q > 1) continue;
+          // a fold: only looking right and down, so the line is one pixel wide.
+          // Faces seen almost edge-on are slivers a pixel or two wide; lines on them only add noise.
+          if (q > 1 || facing(f) < 0.22 || facing(g) < 0.22) continue;
           const dot = normals[f] * normals[g] + normals[f + 1] * normals[g + 1] + normals[f + 2] * normals[g + 2];
           if (Math.abs(dot) < edges) { v = 0; break; }
         }

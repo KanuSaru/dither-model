@@ -19,6 +19,7 @@ const DEFAULTS = {
   zoom: 0.95,
   ambient: 0.08,
   edges: true,
+  outline: true, // a solid line of ink around the silhouette
   dark: [], // boxes in the file's units: [x0, y0, z0, x1, y1, z1]
   light: [-0.4, 0.55, 0.75],
   draggable: true,
@@ -102,7 +103,7 @@ export function createModel(container, options = {}) {
     const bits = renderFrame(
       state.prep,
       state,
-      { w: W, h: H, zoom: o.zoom, light: state.light, ambient: o.ambient, edges: o.edges ? 0.75 : -2, dark: state.dark },
+      { w: W, h: H, zoom: o.zoom, light: state.light, ambient: o.ambient, edges: o.edges ? 0.75 : -2, outline: o.outline, dark: state.dark },
       state.buf,
     );
     const ctx = canvas.getContext("2d");

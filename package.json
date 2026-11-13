@@ -1,6 +1,6 @@
 {
   "name": "dither-model",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Any STL as 1-bit dithered pixel art, turning slowly on your page. A custom element, a React component and a CLI that makes big CAD files small.",
   "type": "module",
   "main": "./src/index.js",

@@ -2,7 +2,7 @@
 
 import { createModel } from "./model.js";
 
-const ATTRS = ["src", "width", "height", "pixel-size", "spin", "yaw", "pitch", "orient", "zoom", "ambient", "edges", "dark", "light", "draggable", "label", "triangles"];
+const ATTRS = ["src", "width", "height", "pixel-size", "spin", "yaw", "pitch", "orient", "zoom", "ambient", "edges", "outline", "dark", "light", "draggable", "label", "triangles"];
 const Base = typeof HTMLElement === "undefined" ? class {} : HTMLElement;
 
 export class DitherModelElement extends Base {
@@ -60,6 +60,7 @@ export class DitherModelElement extends Base {
       zoom: num("zoom"),
       ambient: num("ambient"),
       edges: flag("edges"),
+      outline: flag("outline"),
       dark,
       light: list("light"),
       draggable: flag("draggable"),

@@ -8,7 +8,7 @@
 import { createElement, useEffect, useRef } from "react";
 import { createModel } from "./model.js";
 
-const KEYS = ["src", "model", "width", "height", "pixelSize", "spin", "yaw", "pitch", "orient", "zoom", "ambient", "edges", "dark", "light", "draggable", "label", "triangles"];
+const KEYS = ["src", "model", "width", "height", "pixelSize", "spin", "yaw", "pitch", "orient", "zoom", "ambient", "edges", "outline", "dark", "light", "draggable", "label", "triangles"];
 
 export function DitherModel(props) {
   const { className, style, onLoad } = props;

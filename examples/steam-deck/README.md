@@ -9,10 +9,11 @@ npx dither-model steamdeck_stl_20220202.stl -o steam-deck.json --triangles 9000 
   --license "CC BY-NC-SA 4.0"
 ```
 
-The screen is drawn dark with this box (millimetres, the file's units):
+The screen is drawn dark with this box (millimetres, the file's units). It's the glass as
+measured in the CAD file: 174 × 107 mm, set 1 mm into the front:
 
 ```html
-<dither-model src="steam-deck.json" dark="-88 -49.4 -1 88 50.6 1"></dither-model>
+<dither-model src="steam-deck.json" dark="-87 -53.5 -1.5 87 53.5 0.5"></dither-model>
 ```
 
 ## License

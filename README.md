@@ -42,6 +42,7 @@ Binary and ASCII STL both work. A raw `.stl` also works as `src` directly (it's 
 | `zoom` | `0.95` | How much of the frame it fills; it never leaves the frame while turning |
 | `dark` | | Boxes drawn dark, like a screen: `x0 y0 z0 x1 y1 z1`, in the file's units, `;` between boxes |
 | `edges` | `true` | Dark lines where the surface folds; `false` for a softer look |
+| `outline` | `true` | A solid line around the silhouette, so it stays clean at any angle |
 | `ambient` | `0.08` | Light on surfaces facing away, 0–1 |
 | `light` | `-0.4 0.55 0.75` | Light direction: x right, y up, z toward you |
 | `draggable` | `true` | Drag and arrow keys |
@@ -99,7 +100,7 @@ The background stays transparent.
 `examples/steam-deck/` has Valve's official Steam Deck shell, simplified. That model has its own license, **CC BY-NC-SA 4.0**, not MIT; see its README. It's in the repository for the demo and isn't published to npm.
 
 ```html
-<dither-model src="steam-deck.json" dark="-88 -49.4 -1 88 50.6 1" label="Steam Deck"></dither-model>
+<dither-model src="steam-deck.json" dark="-87 -53.5 -1.5 87 53.5 0.5" label="Steam Deck"></dither-model>
 ```
 
 ## Try it
